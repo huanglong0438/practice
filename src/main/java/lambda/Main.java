@@ -1,9 +1,8 @@
 package lambda;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.IntSummaryStatistics;
-import java.util.List;
+import com.google.common.collect.Lists;
+
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -19,7 +18,13 @@ import java.util.stream.Collectors;
 public class Main {
 
     public static void main(String[] args) {
-        testIntSummaryStatistics();
+        testGroupingBy();
+    }
+
+    private static void testGroupingBy() {
+        List<String> words = Lists.newArrayList("dlc","DLC","Ly");
+        Map<String, Long> freq = words.stream().collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
+        System.out.println(freq);
     }
 
     /**
