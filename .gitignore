@@ -1,0 +1,9 @@
+.DS_Store
+.classpath
+.idea/
+.project
+.settings/
+thread1.txt
+thread2.txt
+*.iml
+target/
