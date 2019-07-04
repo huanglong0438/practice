@@ -23,7 +23,10 @@ import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,7 +71,28 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
+        floatCompute();
+    }
 
+    /**
+     * 浮点数无法精确的表示0.1、0.01...因此计算结果会有问题，尽量用int,long,bigdecimal解决
+     */
+    private static void floatCompute() {
+        System.out.println(1.03 - 0.42);
+    }
+
+    private static void reencode() throws Exception {
+        String chn = "中文";
+        Charset utf8 = Charset.forName("utf-8");
+        Charset gbk = Charset.forName("GBK");
+        ByteBuffer byteBuffer = ByteBuffer.wrap("鲜花".getBytes(StandardCharsets.UTF_8));
+        ByteBuffer byteBuffer1 = gbk.encode(gbk.decode(byteBuffer));
+
+        byte[] bytes = "鲜花".getBytes("utf-8");
+        String newValue = new String(bytes, "gbk");
+        byte[] bytes1 = newValue.getBytes("gbk");
+        String newValue1 = new String(bytes1, "utf-8");
+        System.out.println(newValue1);
     }
 
     private static void tryWithResource() {
