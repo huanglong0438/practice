@@ -71,7 +71,13 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
-        floatCompute();
+        List<Integer> list = Lists.newArrayList(1, 2, 3, 4, 5, 6);
+        int pageNo = 2;
+        int pageSize = 2;
+
+        int limit1 = (pageNo - 1) * pageSize;
+        int limit2 = limit1 + pageSize;
+        System.out.println(list.subList(limit1, limit2));
     }
 
     /**
