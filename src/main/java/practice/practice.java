@@ -54,6 +54,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -71,13 +72,44 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
-        Map<Class, String> map = Maps.newHashMap();
-        map.put(String.class, "String");
-        map.put(String.class, "new String");
-        System.out.println(map.get(String.class));
+        Map<String, List<Integer>> map = Maps.newHashMap();
+        map.put("1", null);
+        List<Integer> list = map.get("1");
+        list = Lists.newArrayList(1, 2, 3);
+        System.out.println(map);
+    }
 
-        System.out.println(Thread.currentThread().getStackTrace()[1].getClassName());
-        System.out.println(Thread.currentThread().getStackTrace()[1].getMethodName());
+    /**
+     * 在增强型for循环中删除list元素会导致ConcurrentModificationException报错
+     * 要换成迭代器
+     */
+    private static void concurrentModificationExeception() {
+        List<Integer> list1 = Lists.newArrayList(1, 2, 3, 4, 5);
+        List<Integer> list2 = Lists.newArrayList(2, 4, 6, 8);
+        for (Integer i1 : list1) {
+            for (Integer i2 : list2) {
+                if (i1.equals(i2)) {
+                    list1.remove(i1);
+                }
+            }
+        }
+        System.out.println(list1);
+        System.out.println(list2);
+    }
+
+    private static void nonConcurrentModificationExeception() {
+        List<Integer> list1 = Lists.newArrayList(1, 2, 3, 4, 5);
+        List<Integer> list2 = Lists.newArrayList(2, 4, 6, 8);
+        for (Iterator<Integer> itr1 = list1.iterator(); itr1.hasNext(); ) {
+            Integer i1 = itr1.next();
+            for (Integer i2 : list2) {
+                if (i1.equals(i2)) {
+                    itr1.remove();
+                }
+            }
+        }
+        System.out.println(list1);
+        System.out.println(list2);
     }
 
     /**
