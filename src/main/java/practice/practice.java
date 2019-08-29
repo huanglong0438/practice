@@ -72,10 +72,8 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
-        Map<String, List<Integer>> map = Maps.newHashMap();
-        map.put("1", null);
-        List<Integer> list = map.get("1");
-        list = Lists.newArrayList(1, 2, 3);
+        Map<String, Integer> map = Maps.newHashMap();
+        map.put(null, 1);
         System.out.println(map);
     }
 

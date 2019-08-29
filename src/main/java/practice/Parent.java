@@ -17,4 +17,8 @@ public class Parent {
     public void doAction2() {
         System.out.println(m);
     }
+
+    public Parent() {
+        System.out.println("parent");
+    }
 }

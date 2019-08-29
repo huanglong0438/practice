@@ -13,6 +13,10 @@ public class Child extends Parent{
         System.out.println(m);
     }
 
+    public Child() {
+        System.out.println("child");
+    }
+
     public static void main(String[] args) {
         Parent parent = new Child();
         parent.doAction1();

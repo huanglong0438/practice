@@ -6,3 +6,4 @@
  - practice.jvm.gc.UseTLAB，TLAB开始/关闭的性能对比
  - practice.jvm.lock，关于JVM偏向锁的性能对比测试
  - practice.jvm.jmm，关于JMM的特性的测试，例如可见性、指令重排
+ - practice.jvm.asm，关于ASM动态生成字节码的Hello World，**体验下动态生成字节码和类加载**
