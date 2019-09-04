@@ -72,9 +72,10 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
-        Map<String, Integer> map = Maps.newHashMap();
-        map.put(null, 1);
-        System.out.println(map);
+        String str = "fuck";
+        String str2 = "fuck";
+        System.out.println(str == str2);
+        System.out.println(str.intern() == str2.intern());
     }
 
     /**
