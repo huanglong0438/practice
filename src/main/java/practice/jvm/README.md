@@ -8,3 +8,4 @@
  - practice.jvm.jmm，关于JMM的特性的测试，例如可见性、指令重排
  - practice.jvm.asm，关于ASM动态生成字节码的Hello World，**体验下动态生成字节码和类加载**
  - practice.jvm.classload.classloadinit，关于类装载过程的初始化阶段，父类子类static静态代码块的执行顺序
+ - practice.jvm.classload.classloader.DoopRun，自定义ClassLoader实现热加载

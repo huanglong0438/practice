@@ -9,6 +9,8 @@ package practice;
 public class Child extends Parent{
     public int m = 1;
 
+    public Long l;
+
     public void doAction1() {
         System.out.println(m);
     }

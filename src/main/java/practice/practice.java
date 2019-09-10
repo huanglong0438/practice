@@ -22,6 +22,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -72,10 +73,10 @@ public class practice {
     }
 
     public static void main(String[] args) throws Exception {
-        String str = "fuck";
-        String str2 = "fuck";
-        System.out.println(str == str2);
-        System.out.println(str.intern() == str2.intern());
+       Child child = new Child();
+       child.m = 123;
+//       child.l = 66666L;
+       System.out.println(JSON.toJSONString(child));
     }
 
     /**
