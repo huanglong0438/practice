@@ -72,12 +72,22 @@ public class practice {
         }*/
     }
 
+    private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
+
     public static void main(String[] args) throws Exception {
-       Child child = new Child();
-       child.m = 123;
-//       child.l = 66666L;
-       System.out.println(JSON.toJSONString(child));
+
     }
+
+/*    private static void testProtostuff() {
+        Schema<KeywordEstimatedDataByBidRequest> schema =
+                RuntimeSchema.getSchema(KeywordEstimatedDataByBidRequest.class);
+        KeywordEstimatedDataByBidRequest request = new KeywordEstimatedDataByBidRequest();
+        request.setSearchRegions(Lists.newArrayList(1L, null, 2L));
+        byte[] protostuff = ProtostuffUtils.toByteArray(request, schema, LinkedBuffer.allocate(500));
+        KeywordEstimatedDataByBidRequest out = new KeywordEstimatedDataByBidRequest();
+        ProtostuffUtils.mergeFrom(protostuff, out, schema);
+        System.out.println(JSON.toJSONString(out));
+    }*/
 
     /**
      * 在增强型for循环中删除list元素会导致ConcurrentModificationException报错
