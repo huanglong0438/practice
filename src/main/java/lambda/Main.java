@@ -23,8 +23,8 @@ public class Main {
 
     private static void testGroupingBy() {
         List<String> words = Lists.newArrayList("dlc","DLC","Ly");
-        Map<String, Long> freq = words.stream().collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
-        System.out.println(freq);
+        Map<Integer, Long> freq = words.stream().collect(Collectors.groupingBy(s -> s.length(), Collectors.counting()));
+        System.out.println(freq.entrySet().stream().sorted((o1, o2) -> (int) (o2.getValue() - o1.getValue())).map(Map.Entry::getKey).collect(Collectors.toList()));
     }
 
     /**
