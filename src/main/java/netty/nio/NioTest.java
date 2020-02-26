@@ -28,14 +28,18 @@ public class NioTest {
 
     }
 
+    /**
+     * nio的selector（Reactor）模式的模板代码
+     */
     public static void selectorTest() throws IOException {
         ServerSocketChannel channel = ServerSocketChannel.open();
-        channel.bind(new InetSocketAddress("localhost", 8080));
+        channel.bind(new InetSocketAddress("localhost", 8080)); // acceptor
 
         Selector selector = Selector.open();
         channel.configureBlocking(false);
-        SelectionKey key = channel.register(selector, SelectionKey.OP_READ);
+        SelectionKey key = channel.register(selector, SelectionKey.OP_READ); // acceptor
 
+        // reactor
         while (true) {
 
             int readyChannels = selector.select();

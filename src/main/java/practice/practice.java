@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.google.common.net.InternetDomainName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -22,7 +23,7 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -30,6 +31,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -55,7 +57,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -72,17 +73,96 @@ public class practice {
         }*/
     }
 
+    static class ListNode {
+        int val;
+        ListNode next;
+        ListNode(int x) { val = x; }
+    }
+
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-
+        Set<Integer> list1 = Sets.newLinkedHashSet(Lists.newArrayList(1, 20, 3));
+        Set<Integer> list2 = Sets.newLinkedHashSet(Lists.newArrayList(4));
+        System.out.println(list1.retainAll(list2));
+        System.out.println(list1);
     }
 
+    public static void testNullEqual() {
+        String a = null;
+        String b = "b";
+        System.out.println(a.equals(b));
+    }
+
+    public static void testXilaAlpha() {
+        String alphas = "ΑΝΣ";
+        System.out.println(alphas.toLowerCase());
+    }
+
+    public static void testDomainExtract() throws MalformedURLException {
+        String PATTERN = "https://(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/.";
+        String PATTERN2 = "(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/";
+        String url = "https://sjh.baidu.com/site/abc.cn/xxoo";
+        String url2 = "https://sjh.baidu.com/site/abc.cn/xxoo";
+        Pattern pattern = Pattern.compile(PATTERN2);
+        Matcher matcher = pattern.matcher(url2);
+//        if (matcher.find()) {
+//            System.out.println(matcher.group(0));
+//            System.out.println(matcher.group(1));
+//            System.out.println(matcher.group(2));
+//            System.out.println(matcher.group(3));
+//        }
+        String parsed = url2.replaceAll(PATTERN2, "");
+        URL res = new URL(parsed);
+        System.out.println(res.getHost());
+    }
+
+    public static void testSort() {
+        int[] nums = new int[]{6, 3, 0, 1, 5, 2};
+        quickSort(nums, 0, nums.length);
+        for (int n : nums) {
+            System.out.println(n);
+        }
+    }
+
+    public static void quickSort(int[] nums, int start, int end) {
+        if (start > end) {
+            // 递归出口
+            return;
+        }
+        int mid = partition(nums, start, end);
+        quickSort(nums, start, mid);
+        quickSort(nums, start + 1, end);
+    }
+
+    private static int partition(int[] nums, int start, int end) {
+        int pivot = nums[start];
+        int pioneer = start + 1;
+        int divider = start + 1;
+        while (pioneer < end) {
+            if (nums[pioneer] < pivot) {
+                // 如果遇到小的，把小的放到小区
+                int temp = nums[divider];
+                nums[divider] = nums[pioneer];
+                nums[pioneer] = temp;
+                // 然后扩充小区
+                divider++;
+            }
+            // 如果遇到大的，先锋继续
+            pioneer++;
+        }
+//        nums[] todo
+        return -1;
+    }
+
+    /**
+     * pb测试，pb会压缩掉List中为null的元素
+     */
 /*    private static void testProtostuff() {
         Schema<KeywordEstimatedDataByBidRequest> schema =
                 RuntimeSchema.getSchema(KeywordEstimatedDataByBidRequest.class);
         KeywordEstimatedDataByBidRequest request = new KeywordEstimatedDataByBidRequest();
-        request.setSearchRegions(Lists.newArrayList(1L, null, 2L));
+        request.setSearchRegions(Lists.newArrayList(1L, null, 2L)); // 这个null在转pb的时候会被丢掉
         byte[] protostuff = ProtostuffUtils.toByteArray(request, schema, LinkedBuffer.allocate(500));
         KeywordEstimatedDataByBidRequest out = new KeywordEstimatedDataByBidRequest();
         ProtostuffUtils.mergeFrom(protostuff, out, schema);
@@ -294,14 +374,19 @@ public class practice {
                             60L, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
                     break;
                 case 2:
-                    // core是1，max是3（没有卵用），超了1就队列了，然后一直等这个1
+                    // core是1，max是3（没有卵用，因为队列的大小是无限的），超了1就队列了，然后一直等这个1
                     executor = new ThreadPoolExecutor(1, 3,
                             60L, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
                     break;
                 case 3:
-                    // 用了LinkedBlockingQueue，变成core没卵用了，超过max才入队列
+                    // 用了LinkedBlockingQueue，max还是没卵用，超过core就入队列
                     executor = new ThreadPoolExecutor(1, 3,
                             60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>());
+                    break;
+                case 4:
+                    // 用了LinkedBlockingQueue(只能排一个)，超过core(1)入队列，超过队列(1+1)，开新线程
+                    executor = new ThreadPoolExecutor(1, 3,
+                            60L, TimeUnit.SECONDS, new LinkedBlockingQueue<>(1));
                 default:
                     executor = Executors.newFixedThreadPool(3);
                     break;
