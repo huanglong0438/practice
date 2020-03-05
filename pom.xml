@@ -93,6 +93,12 @@
             <artifactId>guava</artifactId>
             <version>21.0</version>
         </dependency>
+        <!-- a java test case mock framework for java -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
     
 </project>

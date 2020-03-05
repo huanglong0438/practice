@@ -10,6 +10,7 @@ import com.google.common.net.InternetDomainName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.Assert;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -57,6 +58,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -82,11 +84,60 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Set<Integer> list1 = Sets.newLinkedHashSet(Lists.newArrayList(1, 20, 3));
-        Set<Integer> list2 = Sets.newLinkedHashSet(Lists.newArrayList(4));
-        System.out.println(list1.retainAll(list2));
-        System.out.println(list1);
+        testLambda();
     }
+
+    private static void testLambda() {
+        UrlPromotionPage page1 = new UrlPromotionPage();
+        page1.setOnlineUrl("www.baidu.com");
+        page1.setOcpcTransTypeList(Lists.newArrayList(1, 2, 3));
+        UrlPromotionPage page2 = new UrlPromotionPage();
+        page2.setOnlineUrl("wwww");
+        List<UrlPromotionPage> urlPromotionPages = Lists.newArrayList(page1, page2);
+        Map<String, List<Integer>> url2TransTypes = urlPromotionPages.stream()
+                .filter(page -> page.getOcpcTransTypeList() != null)
+                .collect(Collectors.toMap(UrlPromotionPage::getOnlineUrl, UrlPromotionPage::getOcpcTransTypeList,
+                        (v1, v2) -> v2));
+        System.out.println(url2TransTypes);
+    }
+
+    private static List<Long> strs2List(List<String> strIds) {
+        Assert.notEmpty(strIds);
+        List<Long> result = Lists.newArrayList();
+        int maxLength = 0;
+        List<List<Long>> allIds = Lists.newArrayList();
+        for (String strId : strIds) {
+            List<Long> list = str2List(strId);
+            maxLength = Math.max(maxLength, list.size());
+            allIds.add(list);
+        }
+        for (int i = 0; i < maxLength; i++) {
+            for (List<Long> ids : allIds) {
+                if (i >= ids.size()) {
+                    continue;
+                }
+                result.add(ids.get(i));
+            }
+        }
+        return result;
+    }
+
+    private static List<Long> str2List(String strList) {
+        try {
+            if (org.apache.commons.lang3.StringUtils.isEmpty(strList)) {
+                return Lists.newArrayList();
+            }
+            List<Long> result = Lists.newArrayList();
+            for (String str : strList.split(",")) {
+                Long id = Long.parseLong(str);
+                result.add(id);
+            }
+            return result;
+        } catch (Exception e) {
+            return Lists.newArrayList();
+        }
+    }
+
 
     public static void testNullEqual() {
         String a = null;
