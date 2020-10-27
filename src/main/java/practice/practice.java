@@ -6,9 +6,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.google.common.net.InternetDomainName;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 
@@ -24,7 +24,6 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -32,7 +31,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -77,6 +75,7 @@ public class practice {
 
     static class ListNode {
         int val;
+        Object obj;
         ListNode next;
         ListNode(int x) { val = x; }
     }
@@ -84,7 +83,21 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        testLambda();
+        List<Integer> nums = Lists.newArrayList(6, 3, 0, 1, 5, 2);
+        nums = nums.stream().sorted((i1, i2) -> i1 - i2).collect(Collectors.toList());
+        System.out.println(nums);
+    }
+
+    private static void testJackson() {
+
+    }
+
+    private static int testFinal() {
+        try {
+            return 1;
+        } finally {
+            return 0;
+        }
     }
 
     private static void testLambda() {
@@ -148,24 +161,6 @@ public class practice {
     public static void testXilaAlpha() {
         String alphas = "ΑΝΣ";
         System.out.println(alphas.toLowerCase());
-    }
-
-    public static void testDomainExtract() throws MalformedURLException {
-        String PATTERN = "https://(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/.";
-        String PATTERN2 = "(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/";
-        String url = "https://sjh.baidu.com/site/abc.cn/xxoo";
-        String url2 = "https://sjh.baidu.com/site/abc.cn/xxoo";
-        Pattern pattern = Pattern.compile(PATTERN2);
-        Matcher matcher = pattern.matcher(url2);
-//        if (matcher.find()) {
-//            System.out.println(matcher.group(0));
-//            System.out.println(matcher.group(1));
-//            System.out.println(matcher.group(2));
-//            System.out.println(matcher.group(3));
-//        }
-        String parsed = url2.replaceAll(PATTERN2, "");
-        URL res = new URL(parsed);
-        System.out.println(res.getHost());
     }
 
     public static void testSort() {
@@ -418,6 +413,7 @@ public class practice {
                     // 固定大小是3的线程池，超了以后会队列
                     executor = Executors.newFixedThreadPool(3);
                     break;
+                    // ThreadPoolExecutor的原则上是超过core就入队列，队列不行了就扩张到max，max不够用就抛异常
                 case 1:
                     // core是1、max是3的线程池，超了1直接分配新线程（SynchronousQueue这个老哥不等），
                     // 超了3直接抛异常（SynchronousQueue这个老哥不会等的）

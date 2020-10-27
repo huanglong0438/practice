@@ -1,4 +1,4 @@
-package practice.invocation;
+package practice.dynamicproxy.jdkproxy;
 
 public interface ExampleInterface {
 
