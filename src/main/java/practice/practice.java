@@ -83,9 +83,17 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        List<Integer> nums = Lists.newArrayList(6, 3, 0, 1, 5, 2);
-        nums = nums.stream().sorted((i1, i2) -> i1 - i2).collect(Collectors.toList());
-        System.out.println(nums);
+
+
+    }
+
+    private static void urlDecode(String url) {
+        System.out.println(url.replaceAll("&", "%26"));
+    }
+
+    private static boolean containsMultipleCoreWord(String keyword, String coreWord) {
+        int index = keyword.indexOf(coreWord);
+        return -1 != keyword.indexOf(coreWord, index + coreWord.length());
     }
 
     private static void testJackson() {
@@ -102,7 +110,7 @@ public class practice {
 
     private static void testLambda() {
         UrlPromotionPage page1 = new UrlPromotionPage();
-        page1.setOnlineUrl("www.baidu.com");
+        page1.setOnlineUrl("www.google.com");
         page1.setOcpcTransTypeList(Lists.newArrayList(1, 2, 3));
         UrlPromotionPage page2 = new UrlPromotionPage();
         page2.setOnlineUrl("wwww");
@@ -735,7 +743,7 @@ public class practice {
     }
 
     public static void removeLastChar() {
-	    String url = "http://www.baidu.com/";
+	    String url = "http://www.google.com/";
         url = url.replaceFirst("^(?i)(http://|https://){0,1}", "");
         if (url.charAt(url.length() - 1) == '/') {
             url = url.substring(0, url.length() - 1);

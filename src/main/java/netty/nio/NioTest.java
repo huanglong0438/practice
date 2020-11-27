@@ -9,6 +9,7 @@ import java.nio.channels.Pipe;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.spi.SelectorProvider;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -18,8 +19,11 @@ import java.util.Set;
 public class NioTest {
 
     public static void main(String[] args) throws Exception {
-//        channelToChannelTransfer();
-        basicTest();
+        SelectorProvider provider = SelectorProvider.provider();
+        Selector selector1 = provider.openSelector();
+        Selector selector2 = provider.openSelector();
+        System.out.println(selector1 == selector2);
+        System.out.println(selector1.equals(selector2));
     }
 
     public static void pipleTest() throws IOException {

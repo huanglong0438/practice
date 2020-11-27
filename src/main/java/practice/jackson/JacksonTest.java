@@ -117,7 +117,7 @@ public class JacksonTest {
 
     @Test
     public void testSublinkParse() throws Exception {
-        String json = "{\"topic\":\"\",\"linkUrl\":\"https://m.baidu.com\",\"tag\":\"费用\",\"linkText\":\"雅思考试报名费用\", \"num\":1}";
+        String json = "{\"topic\":\"\",\"linkUrl\":\"https://m.google.com\",\"tag\":\"费用\",\"linkText\":\"雅思考试报名费用\", \"num\":1}";
         Map<String, Object> map = mapper.readValue(json, Map.class);
         String linkText = (String) map.get("linkText");
         map.put("linkText", linkText.replace("雅思", "托福"));
