@@ -17,6 +17,16 @@ public class UrlPromotionPage {
 
     private List<Integer> ocpcTransTypeList;
 
+    private Double factor;
+
+    public Double getFactor() {
+        return factor;
+    }
+
+    public void setFactor(Double factor) {
+        this.factor = factor;
+    }
+
     public String getOnlineUrl() {
         return onlineUrl;
     }
