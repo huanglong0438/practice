@@ -82,10 +82,10 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Set<Integer> list1 = Sets.newLinkedHashSet(Lists.newArrayList(1, 20, 3));
-        Set<Integer> list2 = Sets.newLinkedHashSet(Lists.newArrayList(4));
-        System.out.println(list1.retainAll(list2));
-        System.out.println(list1);
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(1, 2);
+        Set<Integer> keys = map.keySet();
+        keys.add(3);
     }
 
     public static void testNullEqual() {
