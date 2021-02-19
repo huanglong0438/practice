@@ -6,10 +6,16 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.google.common.net.InternetDomainName;
+import com.google.common.util.concurrent.RateLimiter;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.util.Assert;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -23,7 +29,6 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
@@ -31,7 +36,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -54,9 +58,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
@@ -73,8 +79,14 @@ public class practice {
         }*/
     }
 
+    private static ExecutorService executorService = Executors.newFixedThreadPool(
+            10, new CustomizableThreadFactory("cycTemplate-cas-modPlan-async-pool-"));
+
+    private static final RateLimiter rateLimiter = RateLimiter.create(10);
+
     static class ListNode {
         int val;
+        Object obj;
         ListNode next;
         ListNode(int x) { val = x; }
     }
@@ -82,11 +94,98 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Map<Integer, Integer> map = new HashMap<>();
-        map.put(1, 2);
-        Set<Integer> keys = map.keySet();
-        keys.add(3);
+        AtomicInteger cnt = new AtomicInteger(0);
+        new Thread(() -> {
+            while (true) {
+                rateLimiter.acquire();
+                System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
+            }
+        }).start();
+        while (true) {
+            rateLimiter.acquire();
+            System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
+        }
     }
+
+    private static void calcMixWmatch() {
+        int wmatch = 15;
+        int wctrl = 0;
+        int mixWmatch = (wmatch - 15) + (((wctrl + 1) % 4) * (((wmatch - 15) / 16) % 3));
+        System.out.println(mixWmatch);
+    }
+
+    private static void urlDecode(String url) {
+        System.out.println(url.replaceAll("&", "%26"));
+    }
+
+    private static boolean containsMultipleCoreWord(String keyword, String coreWord) {
+        int index = keyword.indexOf(coreWord);
+        return -1 != keyword.indexOf(coreWord, index + coreWord.length());
+    }
+
+    private static void testJackson() {
+
+    }
+
+    private static int testFinal() {
+        try {
+            return 1;
+        } finally {
+            return 0;
+        }
+    }
+
+    private static void testLambda() {
+        UrlPromotionPage page1 = new UrlPromotionPage();
+        page1.setOnlineUrl("www.google.com");
+        page1.setOcpcTransTypeList(Lists.newArrayList(1, 2, 3));
+        UrlPromotionPage page2 = new UrlPromotionPage();
+        page2.setOnlineUrl("wwww");
+        List<UrlPromotionPage> urlPromotionPages = Lists.newArrayList(page1, page2);
+        Map<String, List<Integer>> url2TransTypes = urlPromotionPages.stream()
+                .filter(page -> page.getOcpcTransTypeList() != null)
+                .collect(Collectors.toMap(UrlPromotionPage::getOnlineUrl, UrlPromotionPage::getOcpcTransTypeList,
+                        (v1, v2) -> v2));
+        System.out.println(url2TransTypes);
+    }
+
+    private static List<Long> strs2List(List<String> strIds) {
+        Assert.notEmpty(strIds);
+        List<Long> result = Lists.newArrayList();
+        int maxLength = 0;
+        List<List<Long>> allIds = Lists.newArrayList();
+        for (String strId : strIds) {
+            List<Long> list = str2List(strId);
+            maxLength = Math.max(maxLength, list.size());
+            allIds.add(list);
+        }
+        for (int i = 0; i < maxLength; i++) {
+            for (List<Long> ids : allIds) {
+                if (i >= ids.size()) {
+                    continue;
+                }
+                result.add(ids.get(i));
+            }
+        }
+        return result;
+    }
+
+    private static List<Long> str2List(String strList) {
+        try {
+            if (org.apache.commons.lang3.StringUtils.isEmpty(strList)) {
+                return Lists.newArrayList();
+            }
+            List<Long> result = Lists.newArrayList();
+            for (String str : strList.split(",")) {
+                Long id = Long.parseLong(str);
+                result.add(id);
+            }
+            return result;
+        } catch (Exception e) {
+            return Lists.newArrayList();
+        }
+    }
+
 
     public static void testNullEqual() {
         String a = null;
@@ -97,24 +196,6 @@ public class practice {
     public static void testXilaAlpha() {
         String alphas = "ΑΝΣ";
         System.out.println(alphas.toLowerCase());
-    }
-
-    public static void testDomainExtract() throws MalformedURLException {
-        String PATTERN = "https://(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/.";
-        String PATTERN2 = "(((sjh|isite|ada)\\.baidu)|.+?\\.wejianzhan)\\.com\\/site\\/";
-        String url = "https://sjh.baidu.com/site/abc.cn/xxoo";
-        String url2 = "https://sjh.baidu.com/site/abc.cn/xxoo";
-        Pattern pattern = Pattern.compile(PATTERN2);
-        Matcher matcher = pattern.matcher(url2);
-//        if (matcher.find()) {
-//            System.out.println(matcher.group(0));
-//            System.out.println(matcher.group(1));
-//            System.out.println(matcher.group(2));
-//            System.out.println(matcher.group(3));
-//        }
-        String parsed = url2.replaceAll(PATTERN2, "");
-        URL res = new URL(parsed);
-        System.out.println(res.getHost());
     }
 
     public static void testSort() {
@@ -367,6 +448,7 @@ public class practice {
                     // 固定大小是3的线程池，超了以后会队列
                     executor = Executors.newFixedThreadPool(3);
                     break;
+                    // ThreadPoolExecutor的原则上是超过core就入队列，队列不行了就扩张到max，max不够用就抛异常
                 case 1:
                     // core是1、max是3的线程池，超了1直接分配新线程（SynchronousQueue这个老哥不等），
                     // 超了3直接抛异常（SynchronousQueue这个老哥不会等的）
@@ -688,7 +770,7 @@ public class practice {
     }
 
     public static void removeLastChar() {
-	    String url = "http://www.baidu.com/";
+	    String url = "http://www.google.com/";
         url = url.replaceFirst("^(?i)(http://|https://){0,1}", "");
         if (url.charAt(url.length() - 1) == '/') {
             url = url.substring(0, url.length() - 1);

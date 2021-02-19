@@ -108,7 +108,7 @@ public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneabl
      * eg.
      * 11010011 >> 2 = 11110100
      * 11010011 >>> 2 = 00110100
-     * 参考https://zhidao.baidu.com/question/142301515.html
+     * 参考https://zhidao.google.com/question/142301515.html
      * 用右移实现除法比除法运算速度要快！！！
      *
      * @param key
