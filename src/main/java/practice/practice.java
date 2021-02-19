@@ -6,12 +6,14 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
+import com.google.common.util.concurrent.RateLimiter;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
 
@@ -56,6 +58,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,6 +79,11 @@ public class practice {
         }*/
     }
 
+    private static ExecutorService executorService = Executors.newFixedThreadPool(
+            10, new CustomizableThreadFactory("cycTemplate-cas-modPlan-async-pool-"));
+
+    private static final RateLimiter rateLimiter = RateLimiter.create(10);
+
     static class ListNode {
         int val;
         Object obj;
@@ -86,7 +94,24 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        urlDecode("");
+        AtomicInteger cnt = new AtomicInteger(0);
+        new Thread(() -> {
+            while (true) {
+                rateLimiter.acquire();
+                System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
+            }
+        }).start();
+        while (true) {
+            rateLimiter.acquire();
+            System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
+        }
+    }
+
+    private static void calcMixWmatch() {
+        int wmatch = 15;
+        int wctrl = 0;
+        int mixWmatch = (wmatch - 15) + (((wctrl + 1) % 4) * (((wmatch - 15) / 16) % 3));
+        System.out.println(mixWmatch);
     }
 
     private static void urlDecode(String url) {

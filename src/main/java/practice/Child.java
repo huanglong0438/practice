@@ -1,5 +1,12 @@
 package practice;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.util.ReflectionUtils;
+import sun.reflect.Reflection;
+
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Field;
+
 /**
  *
  * fuck you
@@ -20,14 +27,8 @@ public class Child extends Parent{
     }
 
     public static void main(String[] args) {
-        Parent parent = new Child();
-        parent.doAction1();
-        parent.doAction2();
-        System.out.println(parent.m);
-        Child child = (Child) parent;
-        System.out.println(child.m);
-        child.doAction1();
-
-        Child c = new Child();
+        for (Field field : Child.class.getDeclaredFields()) {
+            System.out.println(field.getName());
+        }
     }
 }
