@@ -94,17 +94,7 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        AtomicInteger cnt = new AtomicInteger(0);
-        new Thread(() -> {
-            while (true) {
-                rateLimiter.acquire();
-                System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
-            }
-        }).start();
-        while (true) {
-            rateLimiter.acquire();
-            System.out.println(Thread.currentThread().getName() + " - " + cnt.incrementAndGet());
-        }
+        urlDecode("star://10.228.170.13:2004?group=normal&instance.id=0.opera-jarvispreview-rose-000-cm.FENGCHAO.bjhw&interface=com.baidu.cpd.rose.FcOcpcService&router.idc.name=bjhw&server.filter=generic,default&version=1.0.0");
     }
 
     private static void calcMixWmatch() {
