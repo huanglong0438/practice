@@ -29,11 +29,13 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +96,23 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        urlDecode("star://10.228.170.13:2004?group=normal&instance.id=0.opera-jarvispreview-rose-000-cm.FENGCHAO.bjhw&interface=com.baidu.cpd.rose.FcOcpcService&router.idc.name=bjhw&server.filter=generic,default&version=1.0.0");
+        System.out.println(getNumberDecimalDigits(10000000.000D));
+    }
+
+    private static int getNumberDecimalDigits(Double number) {
+        String moneyStr = String.format("%f", number);
+        System.out.println(moneyStr);
+        String[] num = moneyStr.split("\\.");
+        if (num.length != 2 || num[1].length() == 0) {
+            return 0;
+        }
+        int digitNumCount = num[1].length();
+        int i = num[1].length() - 1;
+        char ch;
+        while (i >= 0 && (ch = num[1].charAt(i--)) == '0') {
+            digitNumCount--;
+        }
+        return digitNumCount;
     }
 
     private static void calcMixWmatch() {
