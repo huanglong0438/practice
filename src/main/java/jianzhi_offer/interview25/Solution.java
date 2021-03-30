@@ -46,7 +46,7 @@ public class Solution {
             }
         }
         if (branchNode != null) {
-            foreNode.next = branchNode; // foreNode IS NULL !!! WHY!!!
+            foreNode.next = branchNode;
         }
         return baseList;
     }

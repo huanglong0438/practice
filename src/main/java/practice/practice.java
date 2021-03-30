@@ -96,7 +96,7 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        System.out.println(getNumberDecimalDigits(10000000.000D));
+        System.out.println("转化单元-美容美发化妆培训...等".getBytes("gbk").length);
     }
 
     private static int getNumberDecimalDigits(Double number) {
