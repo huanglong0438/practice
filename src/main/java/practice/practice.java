@@ -1,6 +1,11 @@
 package practice;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.MapperFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -86,6 +91,15 @@ public class practice {
 
     private static final RateLimiter rateLimiter = RateLimiter.create(10);
 
+    private static final ObjectMapper objectMapper = new ObjectMapper() {
+        {
+            this.enable(new MapperFeature[]{MapperFeature.SORT_PROPERTIES_ALPHABETICALLY});
+            this.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+            this.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss,SSS"));
+            this.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        }
+    };
+
     static class ListNode {
         int val;
         Object obj;
@@ -96,7 +110,14 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        System.out.println("转化单元-美容美发化妆培训...等".getBytes("gbk").length);
+        Map<Integer, Integer> gatherKeywordIndex2SplitKeywordIndex = Maps.newHashMap();
+        gatherKeywordIndex2SplitKeywordIndex.put(1, 3);
+        Map<String, String> variable = Maps.newHashMap();
+        variable.put("gatherKeywordIndex2SplitKeywordIndex",
+                objectMapper.writeValueAsString(gatherKeywordIndex2SplitKeywordIndex));
+        Map<Integer, Integer> out = objectMapper.readValue(variable.get("gatherKeywordIndex2SplitKeywordIndex"),
+                new TypeReference<HashMap<Integer, Integer>>(){});
+        System.out.println(out);
     }
 
     private static int getNumberDecimalDigits(Double number) {
