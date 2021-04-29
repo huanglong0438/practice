@@ -56,6 +56,8 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -110,14 +112,11 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Map<Integer, Integer> gatherKeywordIndex2SplitKeywordIndex = Maps.newHashMap();
-        gatherKeywordIndex2SplitKeywordIndex.put(1, 3);
-        Map<String, String> variable = Maps.newHashMap();
-        variable.put("gatherKeywordIndex2SplitKeywordIndex",
-                objectMapper.writeValueAsString(gatherKeywordIndex2SplitKeywordIndex));
-        Map<Integer, Integer> out = objectMapper.readValue(variable.get("gatherKeywordIndex2SplitKeywordIndex"),
-                new TypeReference<HashMap<Integer, Integer>>(){});
-        System.out.println(out);
+        Map<String, Integer> map = Maps.newHashMap();
+        map.put("1", 1);
+        Integer num = map.remove("1");
+        System.out.println(num);
+        System.out.println(map.remove("1"));
     }
 
     private static int getNumberDecimalDigits(Double number) {
