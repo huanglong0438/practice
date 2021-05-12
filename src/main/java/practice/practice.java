@@ -2,7 +2,6 @@ package practice;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,12 +11,8 @@ import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.RateLimiter;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.time.StopWatch;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
@@ -34,18 +29,17 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
-import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -56,8 +50,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -67,7 +59,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -112,11 +103,27 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Map<String, Integer> map = Maps.newHashMap();
-        map.put("1", 1);
-        Integer num = map.remove("1");
-        System.out.println(num);
-        System.out.println(map.remove("1"));
+        Map<Integer, List<Integer>> map = Maps.newHashMap();
+        map.put(1, Lists.newArrayList(1, 2, 3, 4, 5, 6));
+        map.put(2, Lists.newArrayList(6, 5, 4, 3, 2, 1));
+        map.forEach((id, list) -> {
+            list.removeIf(ele -> ele == 1);
+        });
+        System.out.println(map);
+
+        Multimap<Integer, Integer> multimap = ArrayListMultimap.create();
+        multimap.put(1, 1);
+        multimap.put(1, 2);
+        multimap.put(1, 3);
+        multimap.put(1, 4);
+        multimap.put(2, 6);
+        multimap.put(2, 5);
+        multimap.put(2, 1);
+        Map<Integer, Collection<Integer>> mmap = multimap.asMap();
+        mmap.forEach((id, list) -> {
+            list.removeIf(ele -> ele == 1);
+        });
+        System.out.println(mmap);
     }
 
     private static int getNumberDecimalDigits(Double number) {

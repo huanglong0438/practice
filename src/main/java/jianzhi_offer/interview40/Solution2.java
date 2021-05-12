@@ -22,8 +22,10 @@ public class Solution2 {
             if (pq.size() < k) {
                 pq.offer(num);
             } else {
-                pq.poll();
-                pq.offer(num);
+                if (num < pq.peek()) {
+                    pq.poll();
+                    pq.offer(num);
+                }
             }
         }
 
@@ -33,10 +35,6 @@ public class Solution2 {
             res[idx++] = num;
         }
         return res;
-    }
-
-    public int[] getLeastNumbersManual(int[] arr, int k) {
-        return null;
     }
 
 }
