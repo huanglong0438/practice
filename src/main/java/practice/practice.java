@@ -103,27 +103,8 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Map<Integer, List<Integer>> map = Maps.newHashMap();
-        map.put(1, Lists.newArrayList(1, 2, 3, 4, 5, 6));
-        map.put(2, Lists.newArrayList(6, 5, 4, 3, 2, 1));
-        map.forEach((id, list) -> {
-            list.removeIf(ele -> ele == 1);
-        });
-        System.out.println(map);
-
-        Multimap<Integer, Integer> multimap = ArrayListMultimap.create();
-        multimap.put(1, 1);
-        multimap.put(1, 2);
-        multimap.put(1, 3);
-        multimap.put(1, 4);
-        multimap.put(2, 6);
-        multimap.put(2, 5);
-        multimap.put(2, 1);
-        Map<Integer, Collection<Integer>> mmap = multimap.asMap();
-        mmap.forEach((id, list) -> {
-            list.removeIf(ele -> ele == 1);
-        });
-        System.out.println(mmap);
+        Object obj = null;
+        String str = (String) obj;
     }
 
     private static int getNumberDecimalDigits(Double number) {
