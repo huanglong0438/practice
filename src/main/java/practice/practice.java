@@ -104,7 +104,10 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        System.out.println((char)('a' + 12));
+        int[] nums = new int[10];
+        nums[0] = 10086;
+        int[] clone = Arrays.copyOf(nums, nums.length);
+        Arrays.stream(clone).forEach(System.out::println);
     }
 
     private static int getNumberDecimalDigits(Double number) {
