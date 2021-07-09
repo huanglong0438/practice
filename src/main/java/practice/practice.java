@@ -104,7 +104,7 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        urlDecode("star://10.173.81.30:8187?executes=1000&group=normal&interface=com.baidu.fengchao.thunder.api.keyword.KeywordQueryService&interface.simple=KeywordQueryService&nettyserver.bizexecutor.pool.size=1500&registry=default&router.idc.name=njjs&stargate.version=1.2.35&version=1.0.0&weight=10");
+        urlDecode("star://10.228.6.18:2003?group=normal&instance.id=0.opera-jarvispreview-rose-000-cm.FENGCHAO.bjhw&interface=com.baidu.cpd.rose.FcOcpcService&router.idc.name=bjhw&server.filter=generic,default&version=1.0.0");
     }
 
     private static int getNumberDecimalDigits(Double number) {
