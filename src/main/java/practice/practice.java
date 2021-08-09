@@ -1,6 +1,8 @@
 package practice;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -104,7 +106,10 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        urlDecode("star://10.103.249.28:35007?group=cartier&instance.id=1.opera-jarvispreview-fcbizCartier-000-yq.FENGCHAO.yq014&interface=com.baidu.cpd.cartier.api.segment.SegmentBindQueryService&router.idc.name=yq01&version=1.0.0");
+        Map<Integer, Object> map = Maps.newHashMap();
+        map.put(1, 2);
+        Long fuck = (Long) map.get(123);
+        System.out.println(fuck);
     }
 
     private static int getNumberDecimalDigits(Double number) {
