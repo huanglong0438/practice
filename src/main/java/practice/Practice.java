@@ -1,8 +1,6 @@
 package practice;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -36,13 +34,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -52,6 +49,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -70,7 +68,7 @@ import java.util.stream.Collectors;
 import static java.util.Arrays.asList;
 
 
-public class practice {
+public class Practice {
 	
 	protected int test = 5;
 
@@ -106,10 +104,27 @@ public class practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        Map<Integer, Object> map = Maps.newHashMap();
-        map.put(1, 2);
-        Long fuck = (Long) map.get(123);
-        System.out.println(fuck);
+        DateFormat sdf = DateFormat.getDateTimeInstance(2, 2, Locale.US);
+        System.out.println(sdf.format(new Date()));
+    }
+
+    private long nextFreeTicketMicros = 0L;
+
+    private long testLongReturnValue() {
+        long returnValue = nextFreeTicketMicros;
+        nextFreeTicketMicros = saturatedAdd(nextFreeTicketMicros, 10);
+        return returnValue;
+    }
+
+    public static long saturatedAdd(long a, long b) {
+        long naiveSum = a + b;
+        if ((a ^ b) < 0 | (a ^ naiveSum) >= 0) {
+            // If a and b have different signs or a has the same sign as the result then there was no
+            // overflow, return.
+            return naiveSum;
+        }
+        // we did over/under flow, if the sign is negative we should return MAX otherwise MIN
+        return Long.MAX_VALUE + ((naiveSum >>> (Long.SIZE - 1)) ^ 1);
     }
 
     private static int getNumberDecimalDigits(Double number) {
@@ -346,7 +361,7 @@ public class practice {
     }
 
     private static void testResources() throws Exception {
-        practice practice = new practice();
+        Practice practice = new Practice();
         Enumeration<URL> urls = practice.getClass().getClassLoader().getResources("");
         while (urls.hasMoreElements()) {
             URL url = urls.nextElement();
@@ -822,7 +837,7 @@ public class practice {
         System.out.println(ModelField.FUCKYou.name());
     }
 
-	public practice(){
+	public Practice(){
 		
 	}
 
