@@ -1,10 +1,5 @@
 package practice;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.util.ReflectionUtils;
-import sun.reflect.Reflection;
-
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 
 /**

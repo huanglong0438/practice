@@ -1,12 +1,6 @@
 package practice;
 
-import sun.awt.CharsetString;
-
 import java.io.UnsupportedEncodingException;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Pattern;
 
 public class Main {
 

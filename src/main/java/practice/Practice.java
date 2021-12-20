@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.util.Assert;
+import org.springframework.util.StopWatch;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -104,8 +105,8 @@ public class Practice {
     private final static String IP_PORT_PATTERN = "\\d+.\\d+.\\d+.\\d+:\\d+";
 
     public static void main(String[] args) throws Exception {
-        DateFormat sdf = DateFormat.getDateTimeInstance(2, 2, Locale.US);
-        System.out.println(sdf.format(new Date()));
+        String str = "abcd";
+        System.out.println(str.substring(0,1));
     }
 
     private long nextFreeTicketMicros = 0L;
